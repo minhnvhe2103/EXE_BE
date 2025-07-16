@@ -5,7 +5,9 @@ import com.exe.super_rice.database.repository.UserRepository;
 import com.exe.super_rice.dto.request.IntrospectRequest;
 import com.exe.super_rice.dto.request.LoginRequest;
 import com.exe.super_rice.dto.response.IntrospectResponse;
+import com.exe.super_rice.enums.AuthProvider;
 import com.exe.super_rice.enums.ErrorCode;
+import com.exe.super_rice.enums.UserRole;
 import com.exe.super_rice.exception.AppException;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -21,11 +23,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -38,6 +42,17 @@ public class AuthServiceImp implements AuthService {
     @NonFinal
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
+    @NonFinal
+    @Value("${zalo.appId}")
+    protected String zaloAppId;
+
+    @NonFinal
+    @Value("${zalo.appSecret}")
+    protected String zaloAppSecret;
+
+    @NonFinal
+    @Value("${zalo.redirectUri}")
+    protected String zaloRedirectUri;
 
     @Override
     public String login(LoginRequest request) {
@@ -146,4 +161,53 @@ public class AuthServiceImp implements AuthService {
 
         return signedJWT;
     }
+
+    public String handleSocialLogin(String email, String fullName, String avatarUrl, AuthProvider provider) {
+        Users user = userRepository.findByEmail(email);
+
+        if (user == null) {
+            user = Users.builder()
+                    .email(email)
+                    .fullName(fullName)
+                    .avatarUrl(avatarUrl)
+                    .role(UserRole.CUSTOMER)
+                    .authProvider(provider)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            userRepository.save(user);
+        }
+
+        return generateToken(user);
+    }
+
+    public String handleZaloLogin(String code) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map<String, String> tokenRequest = Map.of(
+                "app_id", zaloAppId,
+                "app_secret", zaloAppSecret,
+                "code", code
+        );
+
+        var tokenResponse = restTemplate.postForObject(
+                "https://oauth.zaloapp.com/v4/access_token",
+                tokenRequest,
+                Map.class
+        );
+
+        String accessToken = (String) tokenResponse.get("access_token");
+
+        Map userInfo = restTemplate.getForObject(
+                "https://graph.zalo.me/v2.0/me?access_token=" + accessToken,
+                Map.class
+        );
+
+        String zaloId = (String) userInfo.get("id");
+        String name = (String) userInfo.get("name");
+        String avatar = ((Map<String, Object>) ((Map<String, Object>) userInfo.get("picture")).get("data")).get("url").toString();
+        String email = zaloId + "@zalo.com";
+
+        return handleSocialLogin(email, name, avatar, AuthProvider.ZALO);
+    }
+
 }
