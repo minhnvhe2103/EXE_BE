@@ -7,10 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Entity
 @Table(name = "orders")
@@ -39,11 +39,22 @@ public class Order {
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
 
-    private Locale createdBy;
+    private Long createdBy;
 
-    private Locale updatedBy;
+    private Long updatedBy;
 
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDate.now();
+    }
 }

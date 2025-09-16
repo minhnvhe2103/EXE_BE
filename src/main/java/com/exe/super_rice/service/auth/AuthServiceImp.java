@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -93,7 +94,7 @@ public class AuthServiceImp implements AuthService {
             Users user = new Users();
             user.setEmail(request.getEmail());
             user.setPassword(passwordEncoder.encode(request.getPassword()));
-            user.setCreatedAt(LocalDateTime.now());
+            user.setCreatedAt(LocalDate.now());
             userRepository.save(user);
 
             return user.getEmail();
@@ -172,7 +173,7 @@ public class AuthServiceImp implements AuthService {
                     .avatarUrl(avatarUrl)
                     .role(UserRole.CUSTOMER)
                     .authProvider(provider)
-                    .createdAt(LocalDateTime.now())
+                    .createdAt(LocalDate.now())
                     .build();
             userRepository.save(user);
         }

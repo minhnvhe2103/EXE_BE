@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,6 +26,7 @@ public class Payment {
     private Order order;
 
     private LocalDateTime paymentDate = LocalDateTime.now();
+
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
@@ -32,4 +34,23 @@ public class Payment {
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status = PaymentStatus.PAID;
+
+    private Long createdBy;
+
+    private Long updatedBy;
+
+    private LocalDate createdAt;
+
+    private LocalDate updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDate.now();
+    }
 }

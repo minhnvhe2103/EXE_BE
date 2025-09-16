@@ -100,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
                 .id(order.getId())
                 .userId(order.getUser().getId())
                 .totalAmount(order.getTotalAmount())
-                .createdAt(order.getCreatedAt())
+                .createdAt(order.getCreatedAt().atStartOfDay())
                 .items(order.getItems().stream().map(item ->
                         OrderItemResponseDTO.builder()
                                 .productId(item.getProduct().getId())

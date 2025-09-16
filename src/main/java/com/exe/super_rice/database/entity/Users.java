@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +23,15 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String password;
+
     private String fullName;
+
     private String email;
+
     private String phone;
+
     private String avatarUrl;
 
     @Enumerated(EnumType.STRING)
@@ -35,8 +40,25 @@ public class Users {
     @Enumerated(EnumType.STRING)
     private AuthProvider authProvider;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
+
+    private Long createdBy;
+
+    private Long updatedBy;
+
+    private LocalDate createdAt;
+
+    private LocalDate updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDate.now();
+    }
 }
