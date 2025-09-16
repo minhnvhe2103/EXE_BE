@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 @Builder
 @AllArgsConstructor
 public class ApiResponse<T> {
+    @Builder.Default
     private int code = 1000;
     private String message;
     private T data;
