@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "orders")
@@ -37,4 +38,12 @@ public class Order {
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
+
+    private Locale createdBy;
+
+    private Locale updatedBy;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 }
