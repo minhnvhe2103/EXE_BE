@@ -76,15 +76,14 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public CartResponseDTO getCartByUserId(Long userId) {
         try {
             Users user = getUserById(userId);
-            Cart cart = cartRepository.findByUserIdWithItems(userId)
-                    .orElseGet(() -> {
-                        return createNewCartSafely(user);
-                    });
+            Optional<Cart> existingCart = cartRepository.findByUserIdWithItems(userId);
 
+            Cart cart = existingCart.orElseGet(() -> createNewCartSafely(user));
+            
             return mapToCartResponse(cart);
         } catch (Exception e) {
             log.error("Error getting cart for user {}: {}", userId, e.getMessage(), e);
