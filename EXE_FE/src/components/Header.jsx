@@ -40,7 +40,7 @@ export default function Header({ onNavigate }) {
           }}
         >
           <img src="/images/logo.jpg" alt="Supper Rice" className="logo-img" />
-          <span className="logo-text">Supper Rice</span>
+          <span className="logo-text">Super Rice</span>
         </a>
 
         <ul className={`nav-menu ${open ? "open" : ""}`}>

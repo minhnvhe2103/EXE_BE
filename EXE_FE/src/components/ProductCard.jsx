@@ -87,7 +87,7 @@ export default function ProductCard({ product }) {
           fontSize: "1rem",
         }}
       >
-        {product.price}
+        {product.price}₫/KG
       </div>
       <button
         className="add-to-cart"

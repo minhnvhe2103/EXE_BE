@@ -212,28 +212,33 @@ a {
 
 /* ===== Nav menu ===== */
 .nav-menu {
-  display: none;
+  display: none; /* mặc định: ẩn menu (mobile) */
   list-style: none;
   gap: 1.25rem;
   align-items: center;
 }
+
 .nav-menu a {
   font-weight: 500;
   color: #3d2b1f;
+  text-decoration: none;
 }
+
 .nav-menu a:hover {
   color: #ffd700;
 }
+
 /* Desktop */
 @media (min-width: 768px) {
   .nav-menu {
-    display: flex;
+    display: flex; /* desktop: luôn hiện menu */
   }
   .hamburger {
-    display: none;
+    display: none; /* desktop: ẩn hamburger */
   }
 }
-/* Mobile dropdown */
+
+/* Mobile */
 .hamburger {
   background: transparent;
   border: none;
@@ -246,6 +251,8 @@ a {
   font-size: 20px;
   cursor: pointer;
 }
+
+/* Mobile khi mở menu */
 .nav-menu.open {
   position: absolute;
   right: 16px;
@@ -259,6 +266,7 @@ a {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
   z-index: 1100;
 }
+
 .nav-menu.open a {
   padding: 0.25rem 0.5rem;
 }
