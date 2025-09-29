@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
                     .stockQuantity(request.getStockQuantity())
                     .unit(request.getUnit() != null ? request.getUnit() : "kg")
                     .riceType(request.getRiceType())
-                    .createdAt(LocalDateTime.now())
+                    .createdAt(LocalDate.now())
                     .build();
 
             Product savedProduct = productRepository.save(product);
@@ -163,7 +163,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .stockQuantity(product.getStockQuantity())
                 .unit(product.getUnit())
-                .createdAt(product.getCreatedAt())
+                .createdAt(product.getCreatedAt().atStartOfDay())
                 .riceType(product.getRiceType())
                 .build();
     }
