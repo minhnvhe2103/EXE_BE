@@ -1,7 +1,7 @@
 // src/pages/Cart.jsx
 import { useCart } from "../context/CartContext";
 
-export default function Cart() {
+export default function Cart({ onCheckout }) {
   const { items, updateItemQuantity, removeItem, clear } = useCart();
 
   // Tính tổng tiền
@@ -74,7 +74,12 @@ export default function Cart() {
               <button className="clear-btn" onClick={clear}>
                 🗑️ Xóa toàn bộ
               </button>
-              <button className="checkout-btn">💳 Thanh toán</button>
+              <button
+                className="checkout-btn"
+                onClick={onCheckout} // 👉 chuyển sang checkout
+              >
+                💳 Thanh toán
+              </button>
             </div>
           </div>
         </>
