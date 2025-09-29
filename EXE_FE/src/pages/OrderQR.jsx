@@ -21,7 +21,7 @@ export default function OrderQR({ onPaid }) {
         <p>Vui lòng quét mã QR dưới đây để hoàn tất thanh toán:</p>
 
         <img
-          src="/images/qr-bank.png"
+          src="/images/qrbank.jpg"
           alt="QR chuyển khoản"
           className="qr-image"
         />
