@@ -5,7 +5,7 @@ export default function Contact() {
     {
       id: "phone",
       icon: <i className="fas fa-phone" />,
-      text: "0123 456 789",
+      text: "0378757198",
       color: "#4caf50",
       link: "tel:0123456789",
     },
@@ -27,7 +27,7 @@ export default function Contact() {
       ),
       text: "Chat Zalo",
       color: "#0068ff",
-      link: "https://zalo.me/yourZaloID", // thay bằng ID zalo thật
+      link: "https://zalo.me/3664994468292144267", // thay bằng ID zalo thật
     },
     {
       id: "fb",
